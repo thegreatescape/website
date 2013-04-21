@@ -23,7 +23,7 @@ public class Main extends ERXComponent {
 		return null;
 	}
 
-	public WOActionResults lookAtBundle() {
+	public WOActionResults selectObject() {
 		BundleDetailPage p = pageWithName( BundleDetailPage.class );
 		p.setSelectedObject( selectedBundle() );
 		return p;

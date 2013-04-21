@@ -11,45 +11,43 @@ import oo.ReverseEngineer;
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSBundle;
 
-public class ClassDetailPage extends DetailPage<Class> {
+public class ClassDetailPage extends DetailPage<String> {
 
 	public boolean hidePrivate = true;
 
-	public String currentClassName;
-	public String selectedClassName;
-
-	public NSArray<Method> methods;
 	public Method currentMethod;
-
-	public NSArray<Constructor> constructors;
 	public Constructor currentConstructor;
-
-	public NSArray<Field> fields;
 	public Field currentField;
-
 	public Class currentParameterType;
-
-	public String classTemplate;
+	private ReverseEngineer _reverseEngineer;
 
 	public ClassDetailPage( WOContext context ) {
 		super( context );
 	}
 
-	public WOActionResults look() {
-		if( selectedClassName != null ) {
-			ReverseEngineer e = new ReverseEngineer( selectedClassName );
-			fields = e.fields( hidePrivate );
-			constructors = e.constructors( hidePrivate );
-			methods = e.methods( hidePrivate );
-			classTemplate = e.classTemplate( hidePrivate );
-		}
-
-		return null;
+	@Override
+	public void setSelectedObject( String object ) {
+		super.setSelectedObject( object );
+		_reverseEngineer = new ReverseEngineer( object );
 	}
 
-	public String methodModifiers() {
-		return Modifier.toString( currentMethod.getModifiers() );
+	public NSArray<Field> fields() {
+		return _reverseEngineer.fields( hidePrivate );
+	}
+
+	public NSArray<Constructor> constructors() {
+		return _reverseEngineer.constructors( hidePrivate );
+	}
+
+
+	public NSArray<Method> methods() {
+		return _reverseEngineer.methods( hidePrivate );
+	}
+
+	public String classTemplate() {
+		return _reverseEngineer.classTemplate( hidePrivate );
 	}
 
 	public String fieldModifiers() {
@@ -60,19 +58,42 @@ public class ClassDetailPage extends DetailPage<Class> {
 		return Modifier.toString( currentConstructor.getModifiers() );
 	}
 
+	public String methodModifiers() {
+		return Modifier.toString( currentMethod.getModifiers() );
+	}
+
 	public Object currentFieldValue() {
 		if( fieldModifiers().contains( "static" ) ) {
 			try {
 				return currentField.get( null );
 			}
 			catch( IllegalArgumentException e ) {
+				System.out.println( currentField );
 				e.printStackTrace();
 			}
 			catch( IllegalAccessException e ) {
+				System.out.println( currentField );
 				e.printStackTrace();
 			}
 		}
 
 		return null;
 	}
+
+	public NSBundle bundle() {
+		try {
+			return NSBundle.bundleForClass( Class.forName( selectedObject() ) );
+		}
+		catch( ClassNotFoundException e ) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public WOActionResults selectBundle() {
+		BundleDetailPage p = pageWithName( BundleDetailPage.class );
+		p.setSelectedObject( bundle() );
+		return p;
+	}
+
 }

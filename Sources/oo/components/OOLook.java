@@ -13,11 +13,11 @@ public class OOLook extends ERXComponent {
 
 	@Override
 	public NSArray<String> additionalCSSFiles() {
-		return new NSArray<String>( "bootstrap/css/bootstrap.css", "SMLook.css" );
+		return new NSArray<>( "bootstrap/css/bootstrap.css" /*, "SMLook.css" */ );
 	}
 
 	@Override
 	protected NSArray<String> additionalJavascriptFiles() {
-		return new NSArray<String>( "bootstrap/js/bootstrap.js" );
+		return new NSArray<>( "bootstrap/js/bootstrap.js" );
 	}
 }

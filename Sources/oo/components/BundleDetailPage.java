@@ -2,6 +2,7 @@ package oo.components;
 
 import oo.DetailPage;
 
+import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSBundle;
@@ -29,8 +30,19 @@ public class BundleDetailPage extends DetailPage<NSBundle> {
 		return a;
 	}
 
+	public WOActionResults selectObject() {
+		ClassDetailPage p = pageWithName( ClassDetailPage.class );
+		p.setSelectedObject( currentClassName );
+		return p;
+	}
+
 	public String currentPackageName() {
 		int lastPeriod = currentClassName.lastIndexOf( '.' );
+
+		if( lastPeriod == -1 ) {
+			return null;
+		}
+
 		return currentClassName.substring( 0, lastPeriod );
 	}
 
