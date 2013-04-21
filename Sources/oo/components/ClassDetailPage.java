@@ -16,7 +16,7 @@ import com.webobjects.foundation.NSComparator.ComparisonException;
 
 import er.extensions.components.ERXComponent;
 
-public class ClassInspectorPage extends ERXComponent {
+public class ClassDetailPage extends ERXComponent {
 
 	public boolean hidePrivate = true;
 
@@ -41,7 +41,7 @@ public class ClassInspectorPage extends ERXComponent {
 
 	public String string;
 
-	public ClassInspectorPage( WOContext context ) {
+	public ClassDetailPage( WOContext context ) {
 		super( context );
 	}
 
