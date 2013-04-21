@@ -5,25 +5,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import oo.DetailPage;
 import oo.ReverseEngineer;
 
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WOContext;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSBundle;
-import com.webobjects.foundation.NSComparator;
-import com.webobjects.foundation.NSComparator.ComparisonException;
 
-import er.extensions.components.ERXComponent;
-
-public class ClassDetailPage extends ERXComponent {
+public class ClassDetailPage extends DetailPage<Class> {
 
 	public boolean hidePrivate = true;
-
-	public int index;
-
-	public String currentBundleName;
-	public String selectedBundleName;
 
 	public String currentClassName;
 	public String selectedClassName;
@@ -39,16 +30,10 @@ public class ClassDetailPage extends ERXComponent {
 
 	public Class currentParameterType;
 
-	public String string;
+	public String classTemplate;
 
 	public ClassDetailPage( WOContext context ) {
 		super( context );
-	}
-
-	public WOActionResults lookAtBundle() {
-		BundleDetailPage p = pageWithName( BundleDetailPage.class );
-		p.setSelectedObject( selectedBundle() );
-		return p;
 	}
 
 	public WOActionResults look() {
@@ -57,7 +42,7 @@ public class ClassDetailPage extends ERXComponent {
 			fields = e.fields( hidePrivate );
 			constructors = e.constructors( hidePrivate );
 			methods = e.methods( hidePrivate );
-			string = e.classBody( hidePrivate );
+			classTemplate = e.classTemplate( hidePrivate );
 		}
 
 		return null;
@@ -75,46 +60,19 @@ public class ClassDetailPage extends ERXComponent {
 		return Modifier.toString( currentConstructor.getModifiers() );
 	}
 
-	public NSArray<String> bundleNames() {
-		return new NSArray<>( "JavaFoundation", "JavaWebObjects" );
-	}
-
 	public Object currentFieldValue() {
 		if( fieldModifiers().contains( "static" ) ) {
 			try {
 				return currentField.get( null );
 			}
 			catch( IllegalArgumentException e ) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch( IllegalAccessException e ) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
 		return null;
-	}
-
-	private NSBundle selectedBundle() {
-		if( selectedBundleName != null ) {
-			return NSBundle.bundleForName( selectedBundleName );
-		}
-
-		return null;
-	}
-
-	public NSArray<String> classNames() {
-		NSArray<String> a = selectedBundle().bundleClassNames();
-
-		try {
-			a = a.sortedArrayUsingComparator( NSComparator.AscendingCaseInsensitiveStringComparator );
-		}
-		catch( ComparisonException e ) {
-			e.printStackTrace();
-		}
-
-		return a;
 	}
 }

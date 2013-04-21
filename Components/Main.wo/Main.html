@@ -1,3 +1,11 @@
 <wo:OOLook>
 	<p>Hi there!</p>
+	<p>Here you can check out the classes in the selected bundle and, uhm, reflect on them (pun most definitely intended). I recommend looking at something fun, like <tt>WOResponse</tt>.</p>
+	<table class="table table-condensed">
+		<wo:repetition list="$bundleNames" item="$currentBundleName">
+			<tr>
+				<td><wo:link action="$lookAtBundle"><wo:str value="$currentBundleName" /></wo:link></td>
+			</tr>
+		</wo:repetition>
+	</table>
 </wo:OOLook>

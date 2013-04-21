@@ -115,7 +115,7 @@ public class ReverseEngineer {
 		return results;
 	}
 
-	public String classBody( boolean hidePrivate ) {
+	public String classTemplate( boolean hidePrivate ) {
 		StringBuilder b = new StringBuilder();
 
 		b.append( "package " );

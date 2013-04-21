@@ -1,17 +1,8 @@
 <wo:OOLook>
-	<p>
-		Here you can check out the classes in the selected bundle and, uhm, reflect on them (pun most definitely intended). I recommend looking at something fun, like <tt>WOResponse</tt>.
-	</p>
 	<wo:AjaxUpdateContainer id="everything">
 		<wo:form>
-			Bundle: <wo:popUpButton list="$bundleNames" item="$currentBundleName" selection="$selectedBundleName" noSelectionString="Select a bundle…" id="bundleName" class="input-xlarge" /><br />
-			<wo:if condition="$selectedBundleName.length">
-				Class: <wo:popUpButton list="$classNames" item="$currentClassName" selection="$selectedClassName" noSelectionString="Select a class…" id="className" class="input-xlarge" /><br />
-				<wo:checkbox checked="$hidePrivate" id="hidePrivate" /> Hide private members
-				<wo:AjaxObserveField observeFieldID="className" updateContainerID="everything" action="$look" />
-				<wo:AjaxObserveField observeFieldID="hidePrivate" updateContainerID="everything" action="$look" />
-			</wo:if>
-			<wo:AjaxObserveField observeFieldID="bundleName" updateContainerID="everything" action="$look" />
+			<wo:checkbox checked="$hidePrivate" id="hidePrivate" /> Hide private members
+			<wo:AjaxObserveField observeFieldID="hidePrivate" updateContainerID="everything" action="$look" />
 		</wo:form>
 		<wo:conditional condition="$selectedClassName">
 			<h2>Fields</h2>
@@ -66,6 +57,6 @@
 				</wo:repetition>
 			</table>
 		</wo:conditional>
-		<pre><wo:str value="$string" /></pre>
+		<pre><wo:str value="$classTemplate" /></pre>
 	</wo:AjaxUpdateContainer>
 </wo:OOLook>

@@ -1,6 +1,6 @@
 package oo;
 
-import oo.components.ClassDetailPage;
+import oo.components.Main;
 
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
@@ -15,6 +15,6 @@ public class DirectAction extends ERXDirectAction {
 
 	@Override
 	public WOActionResults defaultAction() {
-		return pageWithName( ClassDetailPage.class );
+		return pageWithName( Main.class );
 	}
 }
