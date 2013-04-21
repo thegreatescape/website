@@ -46,7 +46,9 @@ public class ClassDetailPage extends ERXComponent {
 	}
 
 	public WOActionResults lookAtBundle() {
-
+		BundleDetailPage p = pageWithName( BundleDetailPage.class );
+		p.setSelectedObject( selectedBundle() );
+		return p;
 	}
 
 	public WOActionResults look() {
@@ -95,8 +97,16 @@ public class ClassDetailPage extends ERXComponent {
 		return null;
 	}
 
+	private NSBundle selectedBundle() {
+		if( selectedBundleName != null ) {
+			return NSBundle.bundleForName( selectedBundleName );
+		}
+
+		return null;
+	}
+
 	public NSArray<String> classNames() {
-		NSArray<String> a = NSBundle.bundleForName( selectedBundleName ).bundleClassNames();
+		NSArray<String> a = selectedBundle().bundleClassNames();
 
 		try {
 			a = a.sortedArrayUsingComparator( NSComparator.AscendingCaseInsensitiveStringComparator );
