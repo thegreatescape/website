@@ -70,7 +70,7 @@ public class ClassInspectorPage extends ERXComponent {
 	}
 
 	public NSArray<String> bundleNames() {
-		return new NSArray<String>( "JavaFoundation", "JavaWebObjects" );
+		return new NSArray<>( "JavaFoundation", "JavaWebObjects" );
 	}
 
 	public Object currentFieldValue() {
@@ -98,9 +98,9 @@ public class ClassInspectorPage extends ERXComponent {
 			a = a.sortedArrayUsingComparator( NSComparator.AscendingCaseInsensitiveStringComparator );
 		}
 		catch( ComparisonException e ) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return a;
 	}
 }

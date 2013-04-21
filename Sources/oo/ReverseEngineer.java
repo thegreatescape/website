@@ -1,9 +1,15 @@
 package oo;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
@@ -14,6 +20,32 @@ import com.webobjects.foundation.NSMutableArray;
 
 public class ReverseEngineer {
 
+	private static final Logger logger = LoggerFactory.getLogger( ReverseEngineer.class );
+
+	private static File JAR_FILE = new File( "/Users/hugi/Desktop/oo/projects/oo-foundation/target/oo-foundation.jar" );
+	private static URLClassLoader _classLoader;
+
+	private static Class forName( String className ) {
+
+		logger.info( "Loading class with name: " + className );
+
+		try {
+			if( _classLoader == null ) {
+				URL fileURL = JAR_FILE.toURI().toURL();
+				String jarURL = "jar:" + fileURL + "!/";
+				URL urls[] = {
+					new URL( jarURL )
+				};
+				_classLoader = new URLClassLoader( urls );
+			}
+
+			return Class.forName( className, true, _classLoader );
+		}
+		catch( Exception e ) {
+			throw new RuntimeException( e );
+		}
+	}
+
 	/**
 	 * The class we're wrapping/looking at.
 	 */
@@ -23,12 +55,7 @@ public class ReverseEngineer {
 	 * Construct a new reverse engineer for the named class.
 	 */
 	public ReverseEngineer( String className ) {
-		try {
-			clazz = Class.forName( className );
-		}
-		catch( ClassNotFoundException e ) {
-			e.printStackTrace();
-		}
+		clazz = forName( className );
 	}
 
 	public NSArray<Field> fields( boolean hidePrivate ) {
