@@ -45,6 +45,10 @@ public class ClassInspectorPage extends ERXComponent {
 		super( context );
 	}
 
+	public WOActionResults lookAtBundle() {
+
+	}
+
 	public WOActionResults look() {
 		if( selectedClassName != null ) {
 			ReverseEngineer e = new ReverseEngineer( selectedClassName );

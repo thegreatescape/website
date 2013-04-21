@@ -1,79 +1,71 @@
-<!doctype html>
-<html>
-	<head>
-		<title>oo</title>
-		<meta charset="UTF-8">
-	</head>
-	<body>
-		<wo:AjaxBusyIndicator />
-		<p>
-			Here you can check out the classes in the selected bundle and, uhm, reflect on them (pun most definitely intended). I recommend looking at something fun, like <tt>WOResponse</tt>.
-		</p>
-		<wo:AjaxUpdateContainer id="everything">
-			<wo:form>
-				Bundle: <wo:popUpButton list="$bundleNames" item="$currentBundleName" selection="$selectedBundleName" noSelectionString="Select a bundle…" id="bundleName" class="input-xlarge" /><br />
-				<wo:if condition="$selectedBundleName.length">
-					Class: <wo:popUpButton list="$classNames" item="$currentClassName" selection="$selectedClassName" noSelectionString="Select a class…" id="className" class="input-xlarge" /><br />
-					<wo:checkbox checked="$hidePrivate" id="hidePrivate" /> Hide private members
-					<wo:AjaxObserveField observeFieldID="className" updateContainerID="everything" action="$look" />
-					<wo:AjaxObserveField observeFieldID="hidePrivate" updateContainerID="everything" action="$look" />
-				</wo:if>
-				<wo:AjaxObserveField observeFieldID="bundleName" updateContainerID="everything" action="$look" />
-			</wo:form>
-			<wo:conditional condition="$selectedClassName">
-				<h2>Fields</h2>
-				<table class="table table-condensed table-striped">
+<wo:OOLook>
+	<p>
+		Here you can check out the classes in the selected bundle and, uhm, reflect on them (pun most definitely intended). I recommend looking at something fun, like <tt>WOResponse</tt>.
+	</p>
+	<wo:AjaxUpdateContainer id="everything">
+		<wo:form>
+			Bundle: <wo:popUpButton list="$bundleNames" item="$currentBundleName" selection="$selectedBundleName" noSelectionString="Select a bundle…" id="bundleName" class="input-xlarge" /><br />
+			<wo:if condition="$selectedBundleName.length">
+				Class: <wo:popUpButton list="$classNames" item="$currentClassName" selection="$selectedClassName" noSelectionString="Select a class…" id="className" class="input-xlarge" /><br />
+				<wo:checkbox checked="$hidePrivate" id="hidePrivate" /> Hide private members
+				<wo:AjaxObserveField observeFieldID="className" updateContainerID="everything" action="$look" />
+				<wo:AjaxObserveField observeFieldID="hidePrivate" updateContainerID="everything" action="$look" />
+			</wo:if>
+			<wo:AjaxObserveField observeFieldID="bundleName" updateContainerID="everything" action="$look" />
+		</wo:form>
+		<wo:conditional condition="$selectedClassName">
+			<h2>Fields</h2>
+			<table class="table table-condensed table-striped">
+				<tr>
+					<th>Modifiers</th>
+					<th>Type</th>
+					<th>Name</th>
+					<th>Constant value</th>
+				</tr>
+				<wo:repetition list="$fields.@sortAsc.name" item="$currentField">
 					<tr>
-						<th>Modifiers</th>
-						<th>Type</th>
-						<th>Name</th>
-						<th>Constant value</th>
+						<td><wo:str value="$fieldModifiers" /></td>
+						<td><wo:str value="$currentField.type.simpleName" /></td>
+						<td><wo:str value="$currentField.name" /></td>
+						<td><wo:str value="$currentFieldValue" /></td>
 					</tr>
-					<wo:repetition list="$fields.@sortAsc.name" item="$currentField">
-						<tr>
-							<td><wo:str value="$fieldModifiers" /></td>
-							<td><wo:str value="$currentField.type.simpleName" /></td>
-							<td><wo:str value="$currentField.name" /></td>
-							<td><wo:str value="$currentFieldValue" /></td>
-						</tr>
-					</wo:repetition>
-				</table>
-			
-				<h2>Constructors</h2>
-				<table class="table table-condensed table-striped">
+				</wo:repetition>
+			</table>
+		
+			<h2>Constructors</h2>
+			<table class="table table-condensed table-striped">
+				<tr>
+					<th>Modifiers</th>
+					<th>Parameters</th>
+				</tr>
+				<wo:repetition list="$constructors.@sortAsc.name" item="$currentConstructor">
 					<tr>
-						<th>Modifiers</th>
-						<th>Parameters</th>
+						<td><wo:str value="$constructorModifiers" /></td>
+						<td>
+							<wo:repetition list="$currentConstructor.parameterTypes" item="$currentParameterType"><wo:str value="$currentParameterType.simpleName" />, </wo:repetition>
+						</td>
 					</tr>
-					<wo:repetition list="$constructors.@sortAsc.name" item="$currentConstructor">
-						<tr>
-							<td><wo:str value="$constructorModifiers" /></td>
-							<td>
-								<wo:repetition list="$currentConstructor.parameterTypes" item="$currentParameterType"><wo:str value="$currentParameterType.simpleName" />, </wo:repetition>
-							</td>
-						</tr>
-					</wo:repetition>
-				</table>
-			
-				<h2>Methods</h2>
-				<table class="table table-condensed table-striped">
+				</wo:repetition>
+			</table>
+		
+			<h2>Methods</h2>
+			<table class="table table-condensed table-striped">
+				<tr>
+					<th>Modifiers</th>
+					<th>Return type</th>
+					<th>Name</th>
+					<th>Parameters</th>
+				</tr>
+				<wo:repetition list="$methods.@sortAsc.name" item="$currentMethod">
 					<tr>
-						<th>Modifiers</th>
-						<th>Return type</th>
-						<th>Name</th>
-						<th>Parameters</th>
+						<td><wo:str value="$methodModifiers" /></td>
+						<td><wo:str value="$currentMethod.returnType.simpleName" /></td>
+						<td><wo:str value="$currentMethod.name" /></td>
+						<td><wo:repetition list="$currentMethod.parameterTypes" item="$currentParameterType"><wo:str value="$currentParameterType.simpleName" />, </wo:repetition></td>
 					</tr>
-					<wo:repetition list="$methods.@sortAsc.name" item="$currentMethod">
-						<tr>
-							<td><wo:str value="$methodModifiers" /></td>
-							<td><wo:str value="$currentMethod.returnType.simpleName" /></td>
-							<td><wo:str value="$currentMethod.name" /></td>
-							<td><wo:repetition list="$currentMethod.parameterTypes" item="$currentParameterType"><wo:str value="$currentParameterType.simpleName" />, </wo:repetition></td>
-						</tr>
-					</wo:repetition>
-				</table>
-			</wo:conditional>
-			<pre><wo:str value="$string" /></pre>
-		</wo:AjaxUpdateContainer>
-	</body>
-</html>
+				</wo:repetition>
+			</table>
+		</wo:conditional>
+		<pre><wo:str value="$string" /></pre>
+	</wo:AjaxUpdateContainer>
+</wo:OOLook>
